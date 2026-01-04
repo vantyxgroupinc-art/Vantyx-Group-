@@ -4,162 +4,237 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dashboard | Vantyx Group</title>
-<!-- Google AdSense -->
-<script async
-  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1151235909353595"
-  crossorigin="anonymous"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg0:#070A13;
-  --bg1:#0B1020;
-  --card: rgba(255,255,255,.07);
-  --stroke: rgba(255,255,255,.12);
-  --text: rgba(255,255,255,.92);
-  --muted: rgba(255,255,255,.65);
-  --gold:#D4AF37;
-  --indigo:#4F46E5;
+  --bg:#060816;
+  --card:rgba(255,255,255,.07);
+  --stroke:rgba(255,255,255,.12);
+  --text:#fff;
+  --muted:rgba(255,255,255,.6);
+  --primary:#4F46E5;
+  --success:#22c55e;
   --radius:18px;
-  --shadow:0 20px 60px rgba(0,0,0,.55);
 }
 *{box-sizing:border-box}
 body{
   margin:0;
   font-family:Inter,system-ui;
+  background:linear-gradient(180deg,#050714,#0b1020);
   color:var(--text);
-  background:linear-gradient(180deg,var(--bg0),var(--bg1));
-  display:none; /* evita parpadeo */
+  display:none;
 }
-header{
-  padding:20px;
+
+/* LAYOUT */
+.layout{
   display:flex;
-  justify-content:space-between;
-  align-items:center;
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:220px;
+  background:#040615;
+  padding:20px;
 }
 .logo{
-  width:42px;
-  height:42px;
-  border-radius:12px;
-  background:linear-gradient(135deg,var(--gold),var(--indigo));
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#facc15,#4F46E5);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
 }
-.logout{
-  background:#ef4444;
-  border:none;
-  color:#fff;
-  padding:10px 14px;
+.sidebar nav{
+  margin-top:30px;
+}
+.sidebar nav a{
+  display:block;
+  padding:12px;
   border-radius:12px;
-  font-weight:800;
+  margin-bottom:10px;
+  color:var(--muted);
   cursor:pointer;
 }
-main{
-  padding:20px;
-  max-width:1100px;
+.sidebar nav a.active,
+.sidebar nav a:hover{
+  background:var(--card);
+  color:#fff;
+}
+
+/* CONTENT */
+.content{
+  flex:1;
+  padding:24px;
+  max-width:1200px;
   margin:auto;
 }
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:16px;
-}
+
+/* CARDS */
 .card{
   background:var(--card);
   border:1px solid var(--stroke);
   border-radius:var(--radius);
-  padding:18px;
-  box-shadow:var(--shadow);
+  padding:20px;
 }
-.balance{
-  font-size:32px;
-  font-weight:900;
-  color:var(--gold);
-}
-.task{
+
+/* SALDO */
+.balance-card{
   display:flex;
   justify-content:space-between;
-  margin-top:10px;
+  align-items:center;
+  background:linear-gradient(135deg,#4F46E5,#22c55e);
 }
-.task button{
-  background:linear-gradient(135deg,var(--gold),var(--indigo));
-  border:none;
-  border-radius:10px;
-  padding:8px 12px;
+.balance{
+  font-size:36px;
   font-weight:900;
 }
-.small{color:var(--muted);font-size:13px}
+.withdraw{
+  background:#fff;
+  color:#000;
+  border:none;
+  padding:14px 20px;
+  border-radius:14px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px;
+  margin-top:16px;
+}
+
+/* OFFERS */
+.offer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.offer button{
+  background:linear-gradient(135deg,#facc15,#4F46E5);
+  border:none;
+  padding:10px 14px;
+  border-radius:12px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+/* HEADER */
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+.logout{
+  background:#ef4444;
+  border:none;
+  padding:10px 14px;
+  border-radius:12px;
+  font-weight:800;
+  color:#fff;
+  cursor:pointer;
+}
+
+.small{font-size:13px;color:var(--muted)}
+
+@media(max-width:768px){
+  .sidebar{display:none}
+}
 </style>
 </head>
 
 <body>
 
-<header>
-  <div style="display:flex;align-items:center;gap:12px;">
-    <div class="logo"></div>
-    <strong>Vantyx Group</strong>
-  </div>
-  <button class="logout" onclick="logout()">Salir</button>
-</header>
+<div class="layout">
 
-<main>
-  <div class="grid">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">V</div>
+    <nav>
+      <a class="active">🏠 Dashboard</a>
+      <a>🎯 Ofertas</a>
+      <a>💸 Retirar</a>
+      <a>📊 Historial</a>
+      <a>👤 Perfil</a>
+    </nav>
+  </aside>
 
-    <div class="card">
-      <h3>👤 Usuario</h3>
-      <p id="user">—</p>
+  <!-- CONTENT -->
+  <section class="content">
+
+    <div class="top">
+      <div>
+        <strong id="user">—</strong>
+        <div class="small">Bienvenido a Vantyx Group</div>
+      </div>
+      <button class="logout" onclick="logout()">Salir</button>
     </div>
 
-    <div class="card">
-      <h3>💰 Saldo</h3>
-      <div class="balance" id="balance">S/ 0.00</div>
+    <!-- SALDO -->
+    <div class="card balance-card">
+      <div>
+        <div class="small">Saldo disponible</div>
+        <div class="balance" id="balance">S/ 0.00</div>
+      </div>
+      <button class="withdraw">Retirar</button>
     </div>
 
-    <div class="card">
-      <h3>🎯 Tareas</h3>
+    <!-- OFERTAS -->
+    <h3 style="margin-top:28px">🎯 Ofertas disponibles</h3>
 
-      <div class="task">
-        <span>Ver video</span>
+    <div class="grid">
+
+      <div class="card offer">
+        <div>
+          <strong>📺 Ver video</strong>
+          <div class="small">30 segundos</div>
+        </div>
         <button onclick="taskInfo()">+ S/ 0.50</button>
       </div>
 
-      <div class="task">
-        <span>Probar app</span>
+      <div class="card offer">
+        <div>
+          <strong>📱 Probar app</strong>
+          <div class="small">Instalar y abrir</div>
+        </div>
         <button onclick="taskInfo()">+ S/ 1.00</button>
       </div>
 
-      <div class="task">
-        <span>Encuesta</span>
+      <div class="card offer">
+        <div>
+          <strong>📝 Encuesta</strong>
+          <div class="small">3–5 minutos</div>
+        </div>
         <button onclick="taskInfo()">+ S/ 1.50</button>
       </div>
 
-      <p class="small">Las tareas se acreditan tras verificación.</p>
     </div>
 
-  </div>
-</main>
+  </section>
+</div>
 
 <!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = "https://ikocremieaedrmzigvis.supabase.co";
 const SUPABASE_KEY = "sb_publishable_VTFMzfhCPqR-hAmBiF9eRQ_rRScsVrl";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-</script>
-
-<!-- AUTH -->
-<script>
 let user = null;
 let balance = 0;
 
 document.addEventListener("DOMContentLoaded", async () => {
-
-  const { data: { session } } = await supabaseClient.auth.getSession();
-
-  if (!session) {
-    window.location.replace("index.html");
+  const { data:{session} } = await supabaseClient.auth.getSession();
+  if(!session){
+    location.replace("index.html");
     return;
   }
 
@@ -172,25 +247,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     .eq("id", user.id)
     .single();
 
-  if (error) {
-    console.error(error);
-    return;
+  if(!error){
+    balance = data?.balance ?? 0;
+    document.getElementById("balance").textContent = "S/ " + balance.toFixed(2);
   }
 
-  balance = data?.balance ?? 0;
-  document.getElementById("balance").textContent =
-    "S/ " + balance.toFixed(2);
-
-  document.body.style.display = "block";
+  document.body.style.display="block";
 });
 
 function taskInfo(){
-  alert("⏳ Esta tarea se acredita automáticamente tras verificación.");
+  alert("⏳ La recompensa se acredita tras verificación.");
 }
 
 async function logout(){
   await supabaseClient.auth.signOut();
-  window.location.replace("index.html");
+  location.replace("index.html");
 }
 </script>
 
