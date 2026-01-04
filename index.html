@@ -1,852 +1,151 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Vantyx Group | Acceso</title>
-<!-- Google AdSense -->
-<script async
-  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1151235909353595"
-  crossorigin="anonymous"></script>
-  <!-- Fuente moderna -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vantyx Group | Acceso</title>
 
-  <style>
-    :root{
-      --bg0:#070A13;
-      --bg1:#0B1020;
-      --card: rgba(255,255,255,.07);
-      --card2: rgba(255,255,255,.10);
-      --stroke: rgba(255,255,255,.12);
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.72);
-      --muted2: rgba(255,255,255,.55);
-
-      --gold:#D4AF37;
-      --indigo:#4F46E5;
-      --emerald:#22C55E;
-      --danger:#EF4444;
-
-      --shadow: 0 20px 60px rgba(0,0,0,.55);
-      --shadow2: 0 12px 30px rgba(0,0,0,.40);
-
-      --radius: 18px;
-      --radius2: 14px;
-    }
-
-    *{ box-sizing:border-box; }
-    html, body { height: 100%; }
-    body{
-      margin:0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(1200px 800px at 10% 10%, rgba(79,70,229,.22), transparent 60%),
-        radial-gradient(900px 700px at 90% 20%, rgba(212,175,55,.14), transparent 55%),
-        radial-gradient(800px 600px at 50% 100%, rgba(34,197,94,.12), transparent 55%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
-      overflow-x:hidden;
-    }
-
-    /* Textura sutil */
-    .noise{
-      pointer-events:none;
-      position: fixed;
-      inset: 0;
-      background-image: url("https://www.transparenttextures.com/patterns/asfalt-light.png");
-      opacity: .08;
-      mix-blend-mode: overlay;
-      z-index: 0;
-    }
-
-    .wrap{
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 26px 18px 40px;
-      position: relative;
-      z-index: 1;
-    }
-
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .logo{
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 55%),
-        linear-gradient(135deg, rgba(212,175,55,.95), rgba(79,70,229,.95));
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
-      border: 1px solid rgba(255,255,255,.14);
-    }
-
-    .brand h1{
-      font-size: 16px;
-      margin:0;
-      line-height: 1.1;
-      font-weight: 900;
-      letter-spacing: .2px;
-    }
-    .brand small{
-      display:block;
-      margin-top:4px;
-      color: var(--muted2);
-      font-weight: 600;
-      letter-spacing:.2px;
-    }
-
-    .chip{
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      padding: 10px 12px;
-      border-radius: 999px;
-      color: var(--muted);
-      font-size: 12px;
-      display:flex;
-      gap: 8px;
-      align-items:center;
-      white-space: nowrap;
-      backdrop-filter: blur(12px);
-    }
-    .dot{
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      background: var(--emerald);
-      box-shadow: 0 0 0 6px rgba(34,197,94,.14);
-    }
-
-    /* Layout */
-    .grid{
-      display:grid;
-      grid-template-columns: 1.25fr .95fr;
-      gap: 18px;
-      align-items: stretch;
-    }
-
-    .panel{
-      border: 1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      position: relative;
-    }
-
-    .left{
-      padding: 24px;
-      min-height: 560px;
-    }
-
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 14px;
-    }
-    .badge b{ color: rgba(255,255,255,.92); }
-
-    .hero h2{
-      margin: 6px 0 10px;
-      font-size: clamp(26px, 2.6vw, 42px);
-      line-height: 1.05;
-      letter-spacing: -.8px;
-      font-weight: 950;
-    }
-    .hero p{
-      margin: 0 0 14px;
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 14px;
-      max-width: 62ch;
-    }
-
-    .gold{ color: rgba(212,175,55,.98); }
-    .highlight{ color: rgba(255,255,255,.95); font-weight: 800; }
-
-    .features{
-      margin-top: 14px;
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-    }
-    .feat{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      border-radius: 14px;
-      padding: 14px;
-      box-shadow: var(--shadow2);
-      min-height: 120px;
-    }
-    .feat h3{
-      margin:0 0 6px;
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing:.2px;
-    }
-    .feat p{
-      margin:0;
-      font-size: 12.5px;
-      line-height: 1.55;
-      color: var(--muted);
-    }
-
-    .mediaRow{
-      margin-top: 14px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .media{
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      border-radius: 14px;
-      overflow:hidden;
-      box-shadow: var(--shadow2);
-      position: relative;
-      aspect-ratio: 16/9;
-    }
-    .media img{
-      width:100%;
-      height:100%;
-      object-fit: cover;
-      display:block;
-      opacity: .95;
-      filter: saturate(1.08) contrast(1.05);
-    }
-    .media .tag{
-      position:absolute;
-      top: 12px;
-      left: 12px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.35);
-      color: rgba(255,255,255,.88);
-      font-size: 12px;
-      backdrop-filter: blur(10px);
-    }
-
-    .legal{
-      margin-top: 12px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px dashed rgba(255,255,255,.18);
-      background: rgba(0,0,0,.18);
-      color: rgba(255,255,255,.68);
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
-    /* Login */
-    .right{
-      padding: 20px;
-      min-height: 560px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    .card{
-      width:100%;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(10, 14, 28, .55);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 18px;
-      backdrop-filter: blur(14px);
-    }
-
-    .cardHead{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-    .cardHead h3{
-      margin:0;
-      font-size: 18px;
-      font-weight: 950;
-      letter-spacing: -.2px;
-    }
-    .cardHead p{
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 12.5px;
-      line-height: 1.45;
-    }
-
-    .pill{
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.82);
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    form{
-      margin-top: 12px;
-      display:flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .field{ position: relative; }
-    .input{
-      width:100%;
-      padding: 18px 12px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      outline: none;
-      color: rgba(255,255,255,.92);
-      font-size: 14px;
-      transition: border .15s ease, background .15s ease;
-    }
-    .input::placeholder{ color: transparent; }
-    .input:focus{
-      border-color: rgba(212,175,55,.55);
-      background: rgba(255,255,255,.08);
-    }
-
-    .label{
-      position:absolute;
-      left: 12px;
-      top: 13px;
-      color: rgba(255,255,255,.55);
-      font-size: 12px;
-      pointer-events:none;
-      transition: transform .15s ease, top .15s ease, opacity .15s ease;
-      transform-origin: left top;
-      opacity: .95;
-    }
-    .input:not(:placeholder-shown) + .label,
-    .input:focus + .label{
-      top: 7px;
-      transform: scale(.92);
-      opacity: .85;
-    }
-
-    .togglePw{
-      position:absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.12);
-      color: rgba(255,255,255,.80);
-      border-radius: 10px;
-      padding: 8px 10px;
-      font-size: 12px;
-      cursor: pointer;
-      user-select:none;
-    }
-
-    .row{
-      display:flex;
-      justify-content: space-between;
-      align-items:center;
-      gap: 10px;
-      margin-top: 2px;
-    }
-
-    .check{
-      display:flex;
-      align-items:center;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 12px;
-      user-select:none;
-    }
-    .check input{ accent-color: var(--gold); }
-
-    .link{
-      color: rgba(212,175,55,.92);
-      text-decoration: none;
-      font-size: 12px;
-      font-weight: 700;
-    }
-    .link:hover{ text-decoration: underline; }
-
-    .btn{
-      width:100%;
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.14);
-      cursor: pointer;
-      font-weight: 900;
-      letter-spacing: .2px;
-      color: rgba(8,10,18,.92);
-      background:
-        radial-gradient(140% 180% at 10% 10%, rgba(255,255,255,.35), transparent 40%),
-        linear-gradient(135deg, rgba(212,175,55,1), rgba(79,70,229,1));
-      box-shadow: 0 18px 38px rgba(79,70,229,.22);
-      transition: transform .12s ease, filter .12s ease;
-    }
-    .btn:hover{ filter: brightness(1.06); transform: translateY(-1px); }
-    .btn:active{ transform: translateY(0); }
-
-    .helper{
-      margin-top: 10px;
-      font-size: 12px;
-      color: rgba(255,255,255,.62);
-      line-height: 1.5;
-    }
-    .error{
-      display:none;
-      margin-top: 10px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(239,68,68,.35);
-      background: rgba(239,68,68,.10);
-      color: rgba(255,255,255,.90);
-      font-size: 12.5px;
-      line-height: 1.45;
-    }
-
-    /* Toasts */
-    .toasts{
-      position: fixed;
-      right: 16px;
-      bottom: 16px;
-      display:flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 50;
-      width: min(360px, calc(100vw - 32px));
-    }
-    .toast{
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(10, 14, 28, .72);
-      backdrop-filter: blur(14px);
-      border-radius: 14px;
-      box-shadow: var(--shadow2);
-      padding: 12px 12px;
-      display:flex;
-      gap: 10px;
-      align-items:flex-start;
-      animation: in .22s ease-out;
-    }
-    @keyframes in{
-      from { transform: translateY(8px); opacity: 0; }
-      to   { transform: translateY(0); opacity: 1; }
-    }
-    .toastIcon{
-      width: 34px;
-      height: 34px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, rgba(212,175,55,.95),        rgba(79,70,229,.95));
-      border: 1px solid rgba(255,255,255,.14);
-      flex: 0 0 auto;
-      box-shadow: 0 10px 24px rgba(0,0,0,.35);
-    }
-    .toastBody{ flex: 1 1 auto; min-width: 0; }
-    .toastTitle{
-      margin: 0;
-      font-size: 12.5px;
-      font-weight: 900;
-      letter-spacing: .2px;
-      color: rgba(255,255,255,.92);
-    }
-    .toastText{
-      margin: 4px 0 0;
-      font-size: 12.5px;
-      line-height: 1.45;
-      color: rgba(255,255,255,.72);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .toastMeta{
-      margin-top: 6px;
-      font-size: 11px;
-      color: rgba(255,255,255,.52);
-    }
-    .toastClose{
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.78);
-      border-radius: 10px;
-      padding: 6px 8px;
-      cursor: pointer;
-      font-size: 12px;
-      line-height: 1;
-      flex: 0 0 auto;
-    }
-    .toastClose:hover{ background: rgba(255,255,255,.10); }
-
-    footer{
-      margin-top: 14px;
-      color: rgba(255,255,255,.55);
-      font-size: 12px;
-      text-align: center;
-    }
-
-    /* Responsive */
-    @media (max-width: 980px){
-      .grid{ grid-template-columns: 1fr; }
-      .left, .right{ min-height: auto; }
-      .features{ grid-template-columns: 1fr; }
-      .mediaRow{ grid-template-columns: 1fr; }
-    }
-  </style>
+<style>
+/* ==== ESTILOS (igual que tu diseño premium) ==== */
+:root{
+  --bg0:#070A13;
+  --bg1:#0B1020;
+  --card: rgba(255,255,255,.07);
+  --stroke: rgba(255,255,255,.12);
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.65);
+  --gold:#D4AF37;
+  --indigo:#4F46E5;
+  --danger:#EF4444;
+  --radius:18px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui;
+  color:var(--text);
+  background:linear-gradient(180deg,var(--bg0),var(--bg1));
+}
+.wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.card{
+  width:100%;
+  max-width:420px;
+  background:var(--card);
+  border:1px solid var(--stroke);
+  border-radius:var(--radius);
+  padding:22px;
+}
+h1{
+  margin:0 0 6px;
+  font-weight:900;
+}
+p{margin:0 0 14px;color:var(--muted)}
+.field{margin-bottom:12px}
+input{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  outline:none;
+}
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:14px;
+  font-weight:900;
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--gold),var(--indigo));
+}
+.error{
+  display:none;
+  margin-top:10px;
+  padding:10px;
+  border-radius:12px;
+  background:rgba(239,68,68,.15);
+  border:1px solid rgba(239,68,68,.4);
+  color:#fff;
+  font-size:13px;
+}
+.small{
+  margin-top:12px;
+  font-size:12px;
+  color:var(--muted);
+  text-align:center;
+}
+</style>
 </head>
 
 <body>
-  <div class="noise"></div>
 
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <img src="logo-vantyx.png" alt="Logo Vantyx Group" class="logo" />
-        <div>
-          <h1>Vantyx Group</h1>
-          <small>Acceso privado · Comunidad y crecimiento</small>
-        </div>
+<div class="wrap">
+  <div class="card">
+    <h1>🔐 Acceso</h1>
+    <p>Ingresa con tu cuenta de Vantyx Group</p>
+
+    <form id="loginForm">
+      <div class="field">
+        <input id="email" type="email" placeholder="Correo electrónico" required>
       </div>
-
-      <div class="chip" title="Estado del sistema">
-        <span class="dot" aria-hidden="true"></span>
-        <span>Plataforma activa</span>
+      <div class="field">
+        <input id="password" type="password" placeholder="Contraseña" required>
       </div>
-    </header>
+      <button type="submit">Entrar</button>
+      <div class="error" id="errorBox"></div>
+    </form>
 
-    <main class="grid">
-      <!-- Panel izquierdo (marketing / contenido) -->
-      <section class="panel left">
-        <div class="badge">
-          <span>Nuevo</span>
-          <b>Acceso premium</b>
-          <span style="color: rgba(255,255,255,.45)">·</span>
-          <span>Vantyx Group</span>
-        </div>
-
-        <div class="hero">
-          <h2>
-            Gana
-            <span class="gold">Dinero</span> extra de forma simple
-            <span class="highlight"></span> 
-          </h2>
-
-          <p>
-            En <span class="highlight">Vantyx Group</span> descubrimos 3 maneras fáciles y comprobadas de ganar dinero extra online, pensadas para que empieces desde cero y vayas aumentando tus ingresos paso a paso, sin conocimientos previos ni complicaciones.
-‎
-‎En Vantyx Group armamos un ecosistema práctico donde te damos herramientas, comunidad y pasos claros para empezar hoy mismo y escalar con el tiempo. <span class="gold"> EMPIEZA A GANAR AHORA</span>
-            
-          </p>
-        </div>
-
-        <div class="features">
-          <div class="feat">
-            <h3>‎💰 Ingreso 1 – Bajo</h3>
-            <p>
-              Grupo exclusivo de WhatsApp Participás en un grupo donde se realizan sorteos semanales y se comparten oportunidades simples para empezar a ganar sin experiencia.
-            </p>
-          </div>
-          <div class="feat">
-            <h3>‎💸Ingreso 2 – Medio</h3>
-            <p>
-              Aplicación oficial de Vantyx Group Ganás dinero usando nuestra aplicación, donde podés completar misiones simples y verificadas, como:
-‎
-‎Ver videos completos
-‎
-‎Completar offerwalls (registros, pruebas de apps, acciones guiadas)
-‎
-‎Responder encuestas rápidas
-‎
-‎Probar aplicaciones y juegos
-‎
-‎Completar tareas diarias y bonos
-‎
-‎Desbloquear recompensas por constancia
-‎
-‎
-‎Te enseñamos cómo usarla de forma inteligente para maximizar ganancias y no perder tiempo.
-            </p>
-          </div>
-          <div class="feat">
-            <h3>‎🚀 Ingreso 3 – Alto</h3>
-            <p>
-              ‎Invitando amigos Ganás comisiones invitando a otras personas a unirse. Cuantos más se suman, más crecen tus ingresos de forma acumulativa.
-            </p>
-          </div>
-        </div>
-
-        <div class="mediaRow">
-          <div class="media">
-            <span class="tag">Método</span>
-            <img
-              alt="Panel premium"
-              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80"
-            />
-          </div>
-          <div class="736x1104px">
-            <span class="tag">Estrategia</span>
-            <img
-              alt="Trabajo y estrategia"
-              src="dinero1.jpg"
-            />
-          </div>
-        </div>
-
-        <div class="legal">
-          ‎¿Para quién es?
-‎
-‎Personas que quieren dinero extra sin experiencia previa
-‎
-‎Quienes buscan ingresos online reales y simples
-‎
-‎Emprendedores que quieren un ingreso adicional
-        </div>
-      </section>
-
-      <!-- Panel derecho (login) -->
-      <aside class="panel right">
-        <div class="card">
-          <div class="cardHead">
-            <div>
-              <h3>Ingresar</h3>
-              <p>Usá tu usuario asignado para entrar al portal privado de Vantyx.</p>
-            </div>
-            <div class="pill">Acceso seguro</div>
-          </div>
-
-          <form id="loginForm" autocomplete="on">
-            <div class="field">
-              <input
-                class="input"
-                id="username"
-                name="username"
-                type="text"
-                placeholder="Usuario"
-                required
-                autocomplete="username"
-              />
-              <label class="label" for="username">Usuario</label>
-            </div>
-
-            <div class="field">
-              <input
-                class="input"
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Contraseña"
-                required
-                autocomplete="current-password"
-              />
-              <label class="label" for="password">Contraseña</label>
-
-              <button class="togglePw" type="button" id="togglePwBtn" aria-label="Mostrar u ocultar contraseña">
-                Mostrar
-              </button>
-            </div>
-
-            <div class="row">
-              <label class="check">
-                <input id="remember" type="checkbox" />
-                Recordarme
-              </label>
-
-              <a class="link" href="https://wa.me/13234760530?text=QUIERO%20UNIRME">¿Necesitás acceso?</a>
-            </div>
-
-            <button class="btn" type="submit">Entrar a Vantyx</button>
-
-            <div class="error" id="errorBox"></div>
-
-            <div class="helper">
-              
-            </div>
-          </form>
-        </div>
-      </aside>
-    </main>
-
-    <footer>
-      © <span id="year"></span> Vantyx Group · Panel de acceso
-    </footer>
+    <div class="small">
+      ¿No tienes acceso? Solicítalo por WhatsApp
+    </div>
   </div>
+</div>
 
-  <!-- Toast container -->
-  <div class="toasts" id="toasts" aria-live="polite" aria-atomic="true"></div>
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://ikocremieaedrmzigvis.supabase.co";
+const SUPABASE_KEY = "sb_publishable_VTFMzfhCPqR-hAmBiF9eRQ_rRScsVrl";
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
-  <script>
-    // ====== Usuarios válidos (20) ======
-    const validUsers = [
-      { username: "usuario1", password: "pass123" },
-      { username: "usuario2", password: "clave456" },
-      { username: "usuario3", password: "pwd789" },
-      { username: "usuario4", password: "sec1234" },
-      { username: "usuario5", password: "key5678" },
-      { username: "usuario6", password: "lock901" },
-      { username: "usuario7", password: "code234" },
-      { username: "usuario8", password: "auth567" },
-      { username: "usuario9", password: "safe890" },
-      { username: "usuario10", password: "guard123" },
-      { username: "usuario11", password: "shield456" },
-      { username: "usuario12", password: "vault789" },
-      { username: "usuario13", password: "fort1234" },
-      { username: "usuario14", password: "wall5678" },
-      { username: "usuario15", password: "gate901" },
-      { username: "usuario16", password: "door234" },
-      { username: "usuario17", password: "entry567" },
-      { username: "usuario18", password: "access890" },
-      { username: "usuario19", password: "login123" },
-      { username: "usuario20", password: "enter456" }
-    ];
+const form = document.getElementById("loginForm");
+const errorBox = document.getElementById("errorBox");
 
-    // ====== UI helpers ======
-    const $ = (sel) => document.querySelector(sel);
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    $("#year").textContent = new Date().getFullYear();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
 
-    // Mostrar/ocultar contraseña
-    const togglePwBtn = $("#togglePwBtn");
-    const passwordInput = $("#password");
-    togglePwBtn.addEventListener("click", () => {
-      const isHidden = passwordInput.type === "password";
-      passwordInput.type = isHidden ? "text" : "password";
-      togglePwBtn.textContent = isHidden ? "Ocultar" : "Mostrar";
-    });
+  errorBox.style.display = "none";
 
-    // ====== Toasts (notificaciones) ======
-    const toastsEl = $("#toasts");
+  const { error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
 
-    function createToast({ title, text, meta }) {
-      const toast = document.createElement("div");
-      toast.className = "toast";
+  if (error) {
+    errorBox.textContent = "❌ Correo o contraseña incorrectos";
+    errorBox.style.display = "block";
+    return;
+  }
 
-      toast.innerHTML = `
-        <div class="toastIcon" aria-hidden="true"></div>
-        <div class="toastBody">
-          <p class="toastTitle">${escapeHtml(title)}</p>
-          <p class="toastText">${escapeHtml(text)}</p>
-          <div class="toastMeta">${escapeHtml(meta)}</div>
-        </div>
-        <button class="toastClose" type="button" aria-label="Cerrar">×</button>
-      `;
+  // Login correcto → dashboard
+  window.location.href = "dashboard.html";
+});
+</script>
 
-      const closeBtn = toast.querySelector(".toastClose");
-      closeBtn.addEventListener("click", () => toast.remove());
-
-      toastsEl.appendChild(toast);
-
-      // Mantener máximo 4 toasts visibles
-      while (toastsEl.children.length > 4) {
-        toastsEl.firstElementChild?.remove();
-      }
-
-      // Autocierre
-      setTimeout(() => {
-        toast.remove();
-      }, 6500);
-    }
-
-    function escapeHtml(str) {
-      return String(str)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    const randomNames = [
-      "Valentina R.", "Mateo G.", "Sofía L.", "Thiago M.", "Camila P.",
-      "Lucas S.", "Isabella D.", "Benjamín A.", "Martina F.", "Dylan C.",
-      "Renata V.", "Emilio N."
-    ];
-
-    const randomEvents = [
-      "se unió a Vantyx Group",
-      "activó acceso premium",
-      "completó el módulo de inicio",
-      "publicó su primer objetivo",
-      "desbloqueó una nueva ruta"
-    ];
-
-    function randomFrom(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
-
-    function pushRandomToast() {
-      const name = randomFrom(randomNames);
-      const event = randomFrom(randomEvents);
-      const now = new Date();
-      const meta = `Hace ${Math.floor(Math.random() * 8) + 1} min · ${now.toLocaleTimeString([], {hour: "2-digit", minute:"2-digit"})}`;
-
-      createToast({
-        title: "Actividad en vivo",
-        text: `${name} ${event}.`,
-        meta
-      });
-    }
-
-    // Disparos iniciales
-    setTimeout(pushRandomToast, 1200);
-    setTimeout(pushRandomToast, 4200);
-    setInterval(pushRandomToast, 12000);
-
-    // ====== Login ======
-    const errorBox = $("#errorBox");
-
-    $("#loginForm").addEventListener("submit", (event) => {
-      event.preventDefault();
-
-      const username = $("#username").value.trim();
-      const password = $("#password").value;
-
-      const ok = validUsers.some(u => u.username === username && u.password === password);
-
-      if (!ok) {
-        errorBox.style.display = "block";
-        errorBox.textContent = "Usuario o contraseña incorrectos. Verificá tus datos e intentá nuevamente.";
-        createToast({
-          title: "Acceso denegado",
-          text: "Los datos no coinciden con un usuario válido.",
-          meta: "Verificación local (demo)"
-        });
-        return;
-      }
-
-      errorBox.style.display = "none";
-      createToast({
-        title: "Acceso concedido",
-        text: `Bienvenido/a, ${username}. Entrando al panel…`,
-        meta: "Autenticación local (demo)"
-      });
-
-      // Demo: simula redirección
-      setTimeout(() => {
-  localStorage.setItem("user", username); // guarda el usuario
-  window.location.href = "dashboard.html"; // redirige al dashboard
-}, 700);
-    });
-  </script>
 </body>
 </html>
