@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Retiros | Vantyx Group</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg0:#070A13;
+  --bg1:#0B1020;
+  --card: rgba(255,255,255,.07);
+  --stroke: rgba(255,255,255,.12);
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.65);
+  --gold:#D4AF37;
+  --indigo:#4F46E5;
+  --radius:18px;
+  --shadow:0 20px 60px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter;
+  color:var(--text);
+  background:linear-gradient(180deg,var(--bg0),var(--bg1));
+}
+header{
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+main{
+  padding:20px;
+  max-width:900px;
+  margin:auto;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--stroke);
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:var(--shadow);
+  margin-bottom:16px;
+}
+.balance{
+  font-size:32px;
+  font-weight:900;
+  color:var(--gold);
+}
+button{
+  background:linear-gradient(135deg,var(--gold),var(--indigo));
+  border:none;
+  border-radius:12px;
+  padding:10px 14px;
+  font-weight:900;
+  cursor:pointer;
+}
+button:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+input,select{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  margin-top:6px;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+td,th{
+  padding:8px;
+  border-bottom:1px solid var(--stroke);
+  text-align:left;
+}
+.small{color:var(--muted);font-size:13px}
+</style>
+</head>
+
+<body>
+
+<header>
+  <strong>💸 Retiros</strong>
+  <a href="dashboard.html" style="color:#fff;text-decoration:none;">← Volver</a>
+</header>
+
+<main>
+
+<div class="card">
+  <h3>💰 Saldo disponible</h3>
+  <div class="balance" id="balance">S/ 0.00</div>
+</div>
+
+<div class="card">
+  <h3>📤 Solicitar retiro</h3>
+
+  <label>Método</label>
+  <select id="method">
+    <option value="paypal">PayPal (mín. S/20)</option>
+    <option value="yape">Yape (mín. S/20)</option>
+    <option value="recarga">Recarga móvil (mín. S/7)</option>
+  </select>
+
+  <label>Monto (S/)</label>
+  <input type="number" id="amount" step="0.01">
+
+  <label>Correo / Número</label>
+  <input type="text" id="detail" placeholder="PayPal / Yape / Teléfono">
+
+  <button id="withdrawBtn" onclick="withdraw()" style="margin-top:12px;">
+    Solicitar retiro
+  </button>
+
+  <p class="small" id="msg"></p>
+</div>
+
+<div class="card">
+  <h3>📜 Historial de retiros</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Método</th>
+        <th>Monto</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody id="history"></tbody>
+  </table>
+</div>
+
+</main>
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabase = supabaseJs.createClient(
+  "https://ikocremieaedrmzigvis.supabase.co",
+  "sb_publishable_VTFMzfhCPqR-hAmBiF9eRQ_rRScsVrl"
+);
+</script>
+
+<!-- SCRIPT SEGURO -->
+<script>
+const username = localStorage.getItem("user");
+if(!username) location.href="index.html";
+
+let userId = null;
+let balance = 0;
+let processing = false;
+
+async function loadUser(){
+  const { data } = await supabase
+    .from("users")
+    .select("*")
+    .eq("username", username)
+    .single();
+
+  userId = data.id;
+  balance = data.balance;
+  updateBalance();
+  loadHistory();
+}
+
+function updateBalance(){
+  document.getElementById("balance").textContent =
+    "S/ " + Number(balance).toFixed(2);
+}
+
+async function withdraw(){
+  if(processing) return;
+  processing = true;
+
+  const btn = document.getElementById("withdrawBtn");
+  const msg = document.getElementById("msg");
+  btn.disabled = true;
+  btn.textContent = "Procesando...";
+
+  const method = document.getElementById("method").value;
+  const amount = parseFloat(document.getElementById("amount").value);
+  const detail = document.getElementById("detail").value;
+
+  let min = method === "recarga" ? 7 : 20;
+
+  if(!amount || amount < min){
+    msg.textContent = "❌ Monto mínimo S/ " + min;
+    resetBtn();
+    return;
+  }
+
+  if(amount > balance){
+    msg.textContent = "❌ Saldo insuficiente";
+    resetBtn();
+    return;
+  }
+
+  // 🔐 bloquear múltiples pendientes
+  const { data: pending } = await supabase
+    .from("withdrawals")
+    .select("id")
+    .eq("user_id", userId)
+    .eq("status", "pendiente");
+
+  if(pending.length > 0){
+    msg.textContent = "❌ Ya tienes un retiro pendiente";
+    resetBtn();
+    return;
+  }
+
+  // 🔐 solo crear solicitud (NO tocar saldo)
+  const { error } = await supabase
+    .from("withdrawals")
+    .insert({
+      user_id: userId,
+      method,
+      amount,
+      detail,
+      status: "pendiente"
+    });
+
+  if(error){
+    msg.textContent = "❌ Error, intenta luego";
+    resetBtn();
+    return;
+  }
+
+  msg.textContent = "✅ Retiro enviado (en revisión)";
+  document.getElementById("amount").value = "";
+  document.getElementById("detail").value = "";
+
+  resetBtn();
+  loadHistory();
+}
+
+function resetBtn(){
+  processing = false;
+  const btn = document.getElementById("withdrawBtn");
+  btn.disabled = false;
+  btn.textContent = "Solicitar retiro";
+}
+
+async function loadHistory(){
+  const { data } = await supabase
+    .from("withdrawals")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending:false });
+
+  const tbody = document.getElementById("history");
+  tbody.innerHTML = "";
+
+  data.forEach(w=>{
+    tbody.innerHTML += `
+      <tr>
+        <td>${new Date(w.created_at).toLocaleDateString()}</td>
+        <td>${w.method}</td>
+        <td>S/ ${w.amount}</td>
+        <td>${w.status}</td>
+      </tr>
+    `;
+  });
+}
+
+loadUser();
+</script>
+
+</body>
+</html>

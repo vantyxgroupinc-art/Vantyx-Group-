@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard | Vantyx Group</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg0:#070A13;
+  --bg1:#0B1020;
+  --card: rgba(255,255,255,.07);
+  --stroke: rgba(255,255,255,.12);
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.65);
+  --gold:#D4AF37;
+  --indigo:#4F46E5;
+  --radius:18px;
+  --shadow:0 20px 60px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui;
+  color:var(--text);
+  background:linear-gradient(180deg,var(--bg0),var(--bg1));
+  display:none; /* evita parpadeo */
+}
+header{
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logo{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--gold),var(--indigo));
+}
+.logout{
+  background:#ef4444;
+  border:none;
+  color:#fff;
+  padding:10px 14px;
+  border-radius:12px;
+  font-weight:800;
+  cursor:pointer;
+}
+main{
+  padding:20px;
+  max-width:1100px;
+  margin:auto;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--stroke);
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+.balance{
+  font-size:32px;
+  font-weight:900;
+  color:var(--gold);
+}
+.task{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+}
+.task button{
+  background:linear-gradient(135deg,var(--gold),var(--indigo));
+  border:none;
+  border-radius:10px;
+  padding:8px 12px;
+  font-weight:900;
+}
+.small{color:var(--muted);font-size:13px}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="logo"></div>
+    <strong>Vantyx Group</strong>
+  </div>
+  <button class="logout" onclick="logout()">Salir</button>
+</header>
+
+<main>
+  <div class="grid">
+
+    <div class="card">
+      <h3>👤 Usuario</h3>
+      <p id="user">—</p>
+    </div>
+
+    <div class="card">
+      <h3>💰 Saldo</h3>
+      <div class="balance" id="balance">S/ 0.00</div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 Tareas</h3>
+
+      <div class="task">
+        <span>Ver video</span>
+        <button onclick="taskInfo()">+ S/ 0.50</button>
+      </div>
+
+      <div class="task">
+        <span>Probar app</span>
+        <button onclick="taskInfo()">+ S/ 1.00</button>
+      </div>
+
+      <div class="task">
+        <span>Encuesta</span>
+        <button onclick="taskInfo()">+ S/ 1.50</button>
+      </div>
+
+      <p class="small">Las tareas se acreditan tras verificación.</p>
+    </div>
+
+  </div>
+</main>
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://ikocremieaedrmzigvis.supabase.co";
+const SUPABASE_KEY = "sb_publishable_VTFMzfhCPqR-hAmBiF9eRQ_rRScsVrl";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+</script>
+
+<!-- AUTH -->
+<script>
+let user = null;
+let balance = 0;
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+  const { data: { session } } = await supabaseClient.auth.getSession();
+
+  if (!session) {
+    window.location.replace("index.html");
+    return;
+  }
+
+  user = session.user;
+  document.getElementById("user").textContent = user.email;
+
+  const { data, error } = await supabaseClient
+    .from("users")
+    .select("balance")
+    .eq("id", user.id)
+    .single();
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  balance = data?.balance ?? 0;
+  document.getElementById("balance").textContent =
+    "S/ " + balance.toFixed(2);
+
+  document.body.style.display = "block";
+});
+
+function taskInfo(){
+  alert("⏳ Esta tarea se acredita automáticamente tras verificación.");
+}
+
+async function logout(){
+  await supabaseClient.auth.signOut();
+  window.location.replace("index.html");
+}
+</script>
+
+</body>
+</html>

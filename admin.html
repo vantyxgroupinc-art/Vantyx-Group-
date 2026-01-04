@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin | Retiros</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg0:#070A13;
+  --bg1:#0B1020;
+  --card: rgba(255,255,255,.07);
+  --stroke: rgba(255,255,255,.12);
+  --text: rgba(255,255,255,.92);
+  --gold:#D4AF37;
+  --emerald:#22C55E;
+  --danger:#EF4444;
+  --radius:18px;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui;
+  background:linear-gradient(180deg,var(--bg0),var(--bg1));
+  color:var(--text);
+}
+
+header{
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--stroke);
+  border-radius:var(--radius);
+  padding:20px;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr .6fr .7fr 1fr 1.2fr;
+  gap:10px;
+  padding:10px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  font-size:13px;
+}
+
+.row.head{
+  font-weight:900;
+  color:var(--gold);
+}
+
+button{
+  border:none;
+  border-radius:10px;
+  padding:6px 10px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.approve{background:var(--emerald)}
+.reject{background:var(--danger)}
+
+.Pendiente{color:#FACC15}
+.Pagado{color:var(--emerald)}
+.Rechazado{color:var(--danger)}
+
+.filters button{
+  background:#111;
+  color:#fff;
+  margin-right:6px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>👑 Panel Admin</h2>
+  <a href="dashboard.html" style="color:#D4AF37;font-weight:900;">← Volver</a>
+</header>
+
+<main>
+
+<!-- LOGIN ADMIN -->
+<div class="card" id="loginCard">
+  <h3>🔐 Login Admin</h3>
+  <input id="adminUser" placeholder="Usuario"><br><br>
+  <input id="adminPass" type="password" placeholder="Contraseña"><br><br>
+  <button type="button" onclick="login()">Entrar</button>
+</div>
+
+<!-- PANEL -->
+<div class="card" id="panel" style="display:none">
+  <div class="filters">
+    <button onclick="setFilter('all')">Todos</button>
+    <button onclick="setFilter('Pendiente')">Pendiente</button>
+    <button onclick="setFilter('Pagado')">Pagado</button>
+    <button onclick="setFilter('Rechazado')">Rechazado</button>
+  </div>
+
+  <div class="row head">
+    <div>Método</div>
+    <div>Monto</div>
+    <div>Estado</div>
+    <div>Fecha</div>
+    <div>Acciones</div>
+  </div>
+
+  <div id="list"></div>
+</div>
+
+</main>
+
+<script>
+/* ELEMENTOS */
+const loginCard = document.getElementById("loginCard");
+const panel = document.getElementById("panel");
+const list = document.getElementById("list");
+
+/* LOGIN */
+function login(){
+  const user = document.getElementById("adminUser").value;
+  const pass = document.getElementById("adminPass").value;
+
+  if(user === "admin" && pass === "1234"){
+    localStorage.setItem("admin","1");
+    loginCard.style.display = "none";
+    panel.style.display = "block";
+    render();
+  }else{
+    alert("Credenciales incorrectas");
+  }
+}
+
+/* AUTO LOGIN */
+if(localStorage.getItem("admin")){
+  loginCard.style.display = "none";
+  panel.style.display = "block";
+}
+
+/* DATA */
+let history = JSON.parse(localStorage.getItem("withdrawHistory") || "[]");
+let filter = "all";
+
+/* FILTRO */
+function setFilter(f){
+  filter = f;
+  render();
+}
+
+/* NOTIFICACIONES */
+function notify(msg){
+  const n = JSON.parse(localStorage.getItem("notifications") || "[]");
+  n.unshift({msg, date:new Date().toLocaleString()});
+  localStorage.setItem("notifications", JSON.stringify(n));
+}
+
+/* RENDER */
+function render(){
+  list.innerHTML = "";
+
+  if(history.length === 0){
+    list.innerHTML = "<p>No hay retiros</p>";
+    return;
+  }
+
+  history.forEach((w,i)=>{
+    if(filter !== "all" && w.status !== filter) return;
+
+    const row = document.createElement("div");
+    row.className = "row";
+
+    row.innerHTML = `
+      <div>${w.method.toUpperCase()}</div>
+      <div>S/ ${w.amount.toFixed(2)}</div>
+      <div class="${w.status}">${w.status}</div>
+      <div>${w.date}</div>
+      <div>
+        ${w.status === "Pendiente" ? `
+          <button class="approve" onclick="approve(${i})">Aprobar</button>
+          <button class="reject" onclick="reject(${i})">Rechazar</button>
+        ` : "-"}
+      </div>
+    `;
+
+    list.appendChild(row);
+  });
+}
+
+/* ACCIONES */
+function approve(i){
+  history[i].status = "Pagado";
+  notify(`✅ Tu retiro de S/ ${history[i].amount.toFixed(2)} fue PAGADO`);
+  save();
+}
+
+function reject(i){
+  history[i].status = "Rechazado";
+
+  // Reembolso
+  let balance = Number(localStorage.getItem("balance") || 0);
+  balance += history[i].amount;
+  localStorage.setItem("balance", balance);
+
+  notify(`❌ Tu retiro de S/ ${history[i].amount.toFixed(2)} fue RECHAZADO y reembolsado`);
+  save();
+}
+
+function save(){
+  localStorage.setItem("withdrawHistory", JSON.stringify(history));
+  render();
+}
+
+/* INICIAL */
+render();
+</script>
