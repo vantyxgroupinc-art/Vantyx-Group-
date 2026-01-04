@@ -3,222 +3,131 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dashboard | Vantyx Group</title>
+<title>Vantyx Group | Dashboard</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg:#060816;
-  --card:rgba(255,255,255,.07);
-  --stroke:rgba(255,255,255,.12);
+  --bg0:#070A13;
+  --bg1:#0B1020;
+  --card:rgba(255,255,255,.08);
+  --stroke:rgba(255,255,255,.14);
   --text:#fff;
-  --muted:rgba(255,255,255,.6);
-  --primary:#4F46E5;
-  --success:#22c55e;
+  --muted:rgba(255,255,255,.65);
+  --gold:#D4AF37;
+  --indigo:#4F46E5;
   --radius:18px;
 }
 *{box-sizing:border-box}
 body{
   margin:0;
   font-family:Inter,system-ui;
-  background:linear-gradient(180deg,#050714,#0b1020);
+  background:linear-gradient(180deg,var(--bg0),var(--bg1));
   color:var(--text);
-  display:none;
 }
 
-/* LAYOUT */
-.layout{
+.header{
+  padding:18px 24px;
   display:flex;
-  min-height:100vh;
-}
-
-/* SIDEBAR */
-.sidebar{
-  width:220px;
-  background:#040615;
-  padding:20px;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid var(--stroke);
 }
 .logo{
-  width:48px;
-  height:48px;
-  border-radius:14px;
-  background:linear-gradient(135deg,#facc15,#4F46E5);
-  display:flex;
-  align-items:center;
-  justify-content:center;
   font-weight:900;
+  font-size:20px;
 }
-.sidebar nav{
-  margin-top:30px;
-}
-.sidebar nav a{
-  display:block;
-  padding:12px;
+.logout{
+  background:none;
+  border:1px solid var(--stroke);
+  color:#fff;
+  padding:10px 14px;
   border-radius:12px;
-  margin-bottom:10px;
-  color:var(--muted);
   cursor:pointer;
 }
-.sidebar nav a.active,
-.sidebar nav a:hover{
-  background:var(--card);
-  color:#fff;
-}
 
-/* CONTENT */
-.content{
-  flex:1;
+.container{
   padding:24px;
   max-width:1200px;
   margin:auto;
 }
 
-/* CARDS */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
+}
+
 .card{
   background:var(--card);
   border:1px solid var(--stroke);
   border-radius:var(--radius);
-  padding:20px;
+  padding:18px;
 }
 
-/* SALDO */
-.balance-card{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:linear-gradient(135deg,#4F46E5,#22c55e);
+.card h3{
+  margin:0 0 6px;
+  font-size:15px;
+  color:var(--muted);
 }
-.balance{
-  font-size:36px;
+.card .value{
+  font-size:28px;
   font-weight:900;
 }
-.withdraw{
-  background:#fff;
-  color:#000;
-  border:none;
-  padding:14px 20px;
-  border-radius:14px;
-  font-weight:900;
-  cursor:pointer;
+
+.section{
+  margin-top:24px;
 }
 
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:16px;
-  margin-top:16px;
-}
-
-/* OFFERS */
-.offer{
+.loading{
+  min-height:100vh;
   display:flex;
-  justify-content:space-between;
   align-items:center;
-}
-.offer button{
-  background:linear-gradient(135deg,#facc15,#4F46E5);
-  border:none;
-  padding:10px 14px;
-  border-radius:12px;
-  font-weight:900;
-  cursor:pointer;
-}
-
-/* HEADER */
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-.logout{
-  background:#ef4444;
-  border:none;
-  padding:10px 14px;
-  border-radius:12px;
-  font-weight:800;
-  color:#fff;
-  cursor:pointer;
-}
-
-.small{font-size:13px;color:var(--muted)}
-
-@media(max-width:768px){
-  .sidebar{display:none}
+  justify-content:center;
+  font-weight:700;
 }
 </style>
 </head>
 
 <body>
 
-<div class="layout">
+<div id="loading" class="loading">Verificando acceso…</div>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="logo">V</div>
-    <nav>
-      <a class="active">🏠 Dashboard</a>
-      <a>🎯 Ofertas</a>
-      <a>💸 Retirar</a>
-      <a>📊 Historial</a>
-      <a>👤 Perfil</a>
-    </nav>
-  </aside>
+<div id="app" style="display:none">
 
-  <!-- CONTENT -->
-  <section class="content">
+  <div class="header">
+    <div class="logo">Vantyx Group</div>
+    <button class="logout" id="logoutBtn">Cerrar sesión</button>
+  </div>
 
-    <div class="top">
-      <div>
-        <strong id="user">—</strong>
-        <div class="small">Bienvenido a Vantyx Group</div>
+  <div class="container">
+
+    <div class="cards">
+      <div class="card">
+        <h3>Saldo</h3>
+        <div class="value">$0.00</div>
       </div>
-      <button class="logout" onclick="logout()">Salir</button>
+      <div class="card">
+        <h3>Tareas completadas</h3>
+        <div class="value">0</div>
+      </div>
+      <div class="card">
+        <h3>Estado</h3>
+        <div class="value">Activo</div>
+      </div>
     </div>
 
-    <!-- SALDO -->
-    <div class="card balance-card">
-      <div>
-        <div class="small">Saldo disponible</div>
-        <div class="balance" id="balance">S/ 0.00</div>
+    <div class="section">
+      <div class="card">
+        <h3>Bienvenido</h3>
+        <p style="color:var(--muted)">
+          Este es tu panel privado. Tu cuenta está protegida y ligada a este dispositivo.
+        </p>
       </div>
-      <button class="withdraw">Retirar</button>
     </div>
 
-    <!-- OFERTAS -->
-    <h3 style="margin-top:28px">🎯 Ofertas disponibles</h3>
-
-    <div class="grid">
-
-      <div class="card offer">
-        <div>
-          <strong>📺 Ver video</strong>
-          <div class="small">30 segundos</div>
-        </div>
-        <button onclick="taskInfo()">+ S/ 0.50</button>
-      </div>
-
-      <div class="card offer">
-        <div>
-          <strong>📱 Probar app</strong>
-          <div class="small">Instalar y abrir</div>
-        </div>
-        <button onclick="taskInfo()">+ S/ 1.00</button>
-      </div>
-
-      <div class="card offer">
-        <div>
-          <strong>📝 Encuesta</strong>
-          <div class="small">3–5 minutos</div>
-        </div>
-        <button onclick="taskInfo()">+ S/ 1.50</button>
-      </div>
-
-    </div>
-
-  </section>
+  </div>
 </div>
 
 <!-- SUPABASE -->
@@ -228,41 +137,50 @@ const SUPABASE_URL = "https://ikocremieaedrmzigvis.supabase.co";
 const SUPABASE_KEY = "sb_publishable_VTFMzfhCPqR-hAmBiF9eRQ_rRScsVrl";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let user = null;
-let balance = 0;
+/* ===== DEVICE ID ===== */
+function getDeviceId(){
+  return localStorage.getItem("vantyx_device_id");
+}
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const { data:{session} } = await supabaseClient.auth.getSession();
-  if(!session){
-    location.replace("index.html");
+async function checkAccess(){
+  const { data: { user } } = await supabaseClient.auth.getUser();
+
+  if(!user){
+    window.location.href = "index.html";
     return;
   }
 
-  user = session.user;
-  document.getElementById("user").textContent = user.email;
-
-  const { data, error } = await supabaseClient
-    .from("users")
-    .select("balance")
-    .eq("id", user.id)
-    .single();
-
-  if(!error){
-    balance = data?.balance ?? 0;
-    document.getElementById("balance").textContent = "S/ " + balance.toFixed(2);
+  const deviceId = getDeviceId();
+  if(!deviceId){
+    await supabaseClient.auth.signOut();
+    window.location.href = "index.html";
+    return;
   }
 
-  document.body.style.display="block";
-});
+  const { data } = await supabaseClient
+    .from("user_devices")
+    .select("device_id")
+    .eq("user_id", user.id)
+    .single();
 
-function taskInfo(){
-  alert("⏳ La recompensa se acredita tras verificación.");
+  if(!data || data.device_id !== deviceId){
+    await supabaseClient.auth.signOut();
+    window.location.href = "index.html";
+    return;
+  }
+
+  // ✔ Acceso permitido
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("app").style.display = "block";
 }
 
-async function logout(){
+checkAccess();
+
+/* LOGOUT */
+document.getElementById("logoutBtn").addEventListener("click", async ()=>{
   await supabaseClient.auth.signOut();
-  location.replace("index.html");
-}
+  window.location.href = "index.html";
+});
 </script>
 
 </body>
